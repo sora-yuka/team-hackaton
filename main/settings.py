@@ -225,8 +225,23 @@ LOGGING = {
     'loggers': {
         'main': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
+        },
+        'ACCOUNT': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'PRODUCT': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'FAVORITE': {
+            'hadlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,    
         },
     },
 }

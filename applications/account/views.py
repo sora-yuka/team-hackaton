@@ -11,11 +11,11 @@ from applications.account.serializers import (
     ForgotPasswordCompleteSerializer
 )
 
-logger = logging.getLogger('main')
+logger = logging.getLogger('ACCOUNT')
 User = get_user_model()
 
 
-class RegisterApiView(APIView):
+class RegisterAPIView(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -25,11 +25,11 @@ class RegisterApiView(APIView):
                         'We sent an activation email',
                         status=201
                         )
+        
 
-
-class ChangePasswordApiView(APIView):
+class ChangePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
     def post(self, request):
         serializer = ChangePasswordSerializer(
             data=request.data,
@@ -41,17 +41,17 @@ class ChangePasswordApiView(APIView):
         return Response('Password updated successfully...')
 
 
-class ActivationApiView(APIView):
+class ActivationAPIView(APIView):
     def get(self, request, activation_code):
         try:
+            logger.info('User activated profile')
             user = User.objects.get(activation_code=activation_code)
             user.is_active = True
             user.activation_code = ''
             user.save()
-            logger.info('User activated profile')
             return Response({'message': 'successfully'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            logger.warning('ActivationAPIView code doesnt work')
+            logger.warning('ActivationAPIView code doesnt work or was acitavated')
             return Response({'message': 'Wrong email!'}, status=status.HTTP_400_BAD_REQUEST)
 
 

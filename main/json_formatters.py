@@ -13,5 +13,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
             log_record['level'] = record.levelname
         if not log_record.get('filename'):
             log_record['filename'] = record.filename
+        if not log_record.get('name'):
+            log_record['name'] = record.name
 
 formatter = CustomJsonFormatter('%(timestamp)s %(level)s %(name)s %(message)s')
