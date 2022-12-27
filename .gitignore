@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django
 
 venv
-
+.env
 ### Django ###
 *.log
 *.pot

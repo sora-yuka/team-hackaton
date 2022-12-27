@@ -19,7 +19,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(openapi.Info(
-    title = 'shop',
+    title = 'Jellyfish',
     default_version='best_version',
     description='swagger'
     )
@@ -28,6 +28,7 @@ schema_view = get_schema_view(openapi.Info(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/account/', include('applications.account.urls')),
-    path('api/v1/jellyfish/', include('applications.product.urls')),
+    path('api/v1/product/', include('applications.product.urls')),
+    path('api/v1/order/', include('applications.order.urls')),
     path('swagger/', schema_view.with_ui('swagger'))
 ]
