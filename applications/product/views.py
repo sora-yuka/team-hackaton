@@ -5,7 +5,8 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from applications.product.models import Product
 from applications.product.serializers import ProductSerializer
 from applications.product.permissions import IsProductOwnerOrReadOnly
-from rest_framework.viewsets import ModelViewSet
+from core.viewsets.product_viewsets import ModelViewSet
+
 
 class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer

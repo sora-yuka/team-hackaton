@@ -3,8 +3,8 @@ from applications.order.views import OrderApiView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(OrderApiView)
+router.register('', OrderApiView)
 
 urlpatterns = [
-    path('order/', include(router.urls))
+    path('', include(router.urls))
 ]

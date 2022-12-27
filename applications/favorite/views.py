@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.viewsets import ModelViewSet
+from core.viewsets.favorite_viewsets import ModelViewSet
 from applications.favorite.serializers import FavoriteSerializer
 from applications.favorite.models import Favorite
 from applications.favorite.permissions import IsFavoriteOwner

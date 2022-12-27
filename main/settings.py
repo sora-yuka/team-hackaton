@@ -223,11 +223,6 @@ LOGGING = {
         'level': 'WARNING',
     },
     'loggers': {
-        'main': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
         'ACCOUNT': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
@@ -243,6 +238,16 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,    
         },
+        'ORDER': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'FEEDBACK': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        }
     },
 }
 
