@@ -9,10 +9,12 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework.generics import (
     ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 )
+from applications.feedback import mixins
 
 logger = logging.getLogger('PRODUCT')
 
-class ProductListAPIView(ListAPIView):
+
+class ProductListAPIView(mixins.LikedMixin, ListAPIView):
     logger.info('User browsing product')
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
@@ -21,7 +23,7 @@ class ProductListAPIView(ListAPIView):
     filterset_fields = ['category']
     search_fields = ['name']
     order_fields = ['price']
-        
+
     def get_queryset(self):
         queryset = super().get_queryset()
         logger.info('User browsing product')
@@ -31,22 +33,22 @@ class ProductListAPIView(ListAPIView):
 class ProductRetrieveAPIView(RetrieveAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    
+
 
 class ProductCreateAPIView(CreateAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsAuthenticated]
-    
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-        
+
 
 class ProductUpdateAPIView(UpdateAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsProductOwner]
-    
+
 
 class ProductDestroyAPIView(DestroyAPIView):
     serializer_class = ProductSerializer

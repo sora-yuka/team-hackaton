@@ -1,7 +1,10 @@
 
-
 from django.db import models
 from django.contrib.auth import get_user_model
+
+from django.contrib.contenttypes.fields import GenericRelation
+
+from applications.feedback.models import Like
 
 User = get_user_model()
 
@@ -19,7 +22,7 @@ CATEGORY_NAME = (
     ('Other', 'Other')
 )
 
-    
+
 class Product(models.Model):
     name = models.CharField(max_length=50)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
@@ -27,11 +30,16 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=50, choices=CATEGORY_NAME)
     amount = models.PositiveIntegerField()
-    
+    likes = GenericRelation(Like)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
+
     def __str__(self) -> str:
         return self.name
-    
-    
+
+
 class Image(models.Model):
     image = models.ImageField(upload_to='images/')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
