@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from applications.order.models import Order
-from applications.order.tasks import send_confirmation_email
+from applications.order.tasks import send_confirmation_code
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -11,6 +11,13 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
         
+        
+    def validate_number(self, number):
+        if number.startswith('996') and len(number)==12:
+            return number
+        raise serializers.ValidationError('Please enter the phone number correctly')
+    
+             
     def create(self, validated_data):
         amount = validated_data['amount']
         product = validated_data['product']
@@ -19,9 +26,9 @@ class OrderSerializer(serializers.ModelSerializer):
         if amount == 0:
             raise serializers.ValidationError('Enter more than 0 pcs')
         
-        product.amount -= amount
-        product.save(update_fields=['amount'])
+        # product.amount -= amount
+        # product.save(update_fields=['amount'])
         
         order = Order.objects.create(**validated_data)
-        send_confirmation_email.delay(order.owner.email, order.activation_code, order.product.name, order.total_price)
-        return 
+        send_confirmation_code.delay(order.owner.email, order.activation_code)
+        return order
