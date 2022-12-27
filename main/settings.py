@@ -239,7 +239,7 @@ LOGGING = {
             'propagate': False,
         },
         'FAVORITE': {
-            'hadlers': ['console', 'file'],
+            'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': False,    
         },

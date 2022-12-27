@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from applications.favorite.views import FavoriteViewSet
 
 router = DefaultRouter()
-router.register('favorites/', FavoriteViewSet)
+router.register('', FavoriteViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
