@@ -27,7 +27,7 @@ class RegisterAPIView(APIView):
                         )
 
 
-class ChangePasswordApiView(APIView):
+class ChangePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
