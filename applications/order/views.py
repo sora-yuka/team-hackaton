@@ -1,4 +1,3 @@
-# from rest_framework.viewsets import ModelViewSet
 from core.viewsets.order_viwsets import ModelViewSet
 from applications.order.permissions import IsOrderOwner
 from rest_framework.views import APIView
@@ -23,7 +22,7 @@ class OrderApiView(ModelViewSet):
         
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(owner=self.request.user)
+        queryset = queryset.filter(owner=self.request.user.id)
         return queryset
     
     

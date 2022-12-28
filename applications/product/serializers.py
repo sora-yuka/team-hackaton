@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from applications.product.models import Product, Image
+from django.db.models import Avg
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -28,3 +29,9 @@ class ProductSerializer(serializers.ModelSerializer):
             list_images.append(Image(product=product, image=image))
         Image.objects.bulk_create(list_images)
         return product
+    
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['likes'] = instance.likes.filter(object_id=True).count()
+        rep['rating'] = instance.ratings.all().aggregate(Avg('rating'))['rating__avg']
+        return rep
