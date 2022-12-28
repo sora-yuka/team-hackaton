@@ -46,10 +46,8 @@ class OrderConfirmApiView(APIView):
     def get(self, request, code):
         order = get_object_or_404(Order, activation_code=code)
         
-        
         if order.amount > order.product.amount:
             return Response(f'Sorry, but right now we dont have so much pcs')
-        
         
         if not order.is_confirm:
             order.is_confirm = True

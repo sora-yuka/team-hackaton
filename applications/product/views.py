@@ -5,7 +5,11 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from applications.product.models import Product
 from applications.product.serializers import ProductSerializer
 from applications.product.permissions import IsProductOwnerOrReadOnly
-from core.viewsets.product_viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from core.viewsets.product_viewsets import ModelViewSet, GenericViewSet
+from core.mixins import order_mixins
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 class ProductViewSet(ModelViewSet):
@@ -23,3 +27,30 @@ class ProductViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
+
+    @action(detail=True, methods=['GET'])
+    def recommend(self, request, pk=None):
+        category = self.get_object().category
+        queryset = Product.objects.filter(category=category)
+        serializers = ProductSerializer(queryset, many=True)
+        return Response(serializers.data)
+
+
+# class ProductRecApiView(order_mixins.ListModelMixin, GenericViewSet):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     # permission_classes = [IsAuthenticated]
+    
+#     # def get_queryset(self):
+#     #     queryset = super().get_queryset()
+#     #     queryset = queryset.filter(category=category)
+#     #     return queryset
+    
+#     @action(detail=True, methods=['GET'])
+#     def recomend(self, request, pk=None):
+#         product = self.get_object()
+#         category = product.category
+#         queryset = Product.objects.filter(category=category)
+#         serializers = ProductSerializer(queryset, many=True)
+#         return Response(serializers.data)
+    
