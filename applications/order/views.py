@@ -61,10 +61,3 @@ class OrderConfirmApiView(APIView):
             return Response({'message': 'You have confirmed order'}, status=status.HTTP_200_OK)
         return Response({'message': 'You have already confirmed order'}, status=status.HTTP_400_BAD_REQUEST)
     
-    
-
-    
-
-    
-
-
