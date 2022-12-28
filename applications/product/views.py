@@ -5,9 +5,10 @@ from applications.product.models import Product
 from applications.product.serializers import ProductSerializer
 from applications.product.permissions import IsProductOwnerOrReadOnly
 from core.viewsets.product_viewsets import ModelViewSet
+from applications.feedback.mixins import LikedMixin, RatingMixin
 
 
-class ProductViewSet(ModelViewSet):
+class ProductViewSet(LikedMixin, RatingMixin, ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsProductOwnerOrReadOnly]
@@ -22,5 +23,4 @@ class ProductViewSet(ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
-
     
