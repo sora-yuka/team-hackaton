@@ -35,22 +35,3 @@ class ProductViewSet(ModelViewSet):
         serializers = ProductSerializer(queryset, many=True)
         return Response(serializers.data)
 
-
-# class ProductRecApiView(order_mixins.ListModelMixin, GenericViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     # permission_classes = [IsAuthenticated]
-    
-#     # def get_queryset(self):
-#     #     queryset = super().get_queryset()
-#     #     queryset = queryset.filter(category=category)
-#     #     return queryset
-    
-#     @action(detail=True, methods=['GET'])
-#     def recomend(self, request, pk=None):
-#         product = self.get_object()
-#         category = product.category
-#         queryset = Product.objects.filter(category=category)
-#         serializers = ProductSerializer(queryset, many=True)
-#         return Response(serializers.data)
-    
