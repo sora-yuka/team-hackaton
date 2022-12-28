@@ -4,6 +4,7 @@ from applications.favorite.serializers import FavoriteSerializer
 from applications.favorite.models import Favorite
 from applications.favorite.permissions import IsFavoriteOwner
 
+
 class FavoriteViewSet(ModelViewSet):
     serializer_class = FavoriteSerializer
     queryset = Favorite.objects.all()

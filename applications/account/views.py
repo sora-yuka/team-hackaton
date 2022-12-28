@@ -27,7 +27,7 @@ class RegisterAPIView(APIView):
                         )
 
 
-class ChangePasswordApiView(APIView):
+class ChangePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request):
@@ -44,14 +44,12 @@ class ChangePasswordApiView(APIView):
 class ActivationAPIView(APIView):
     def get(self, request, activation_code):
         try:
-            logger.info('User activated profile')
             user = User.objects.get(activation_code=activation_code)
             user.is_active = True
             user.activation_code = ''
             user.save()
             return Response({'message': 'successfully'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            logger.warning('ActivationAPIView code doesnt work or was acitavated')
             return Response({'message': 'Wrong email!'}, status=status.HTTP_400_BAD_REQUEST)
 
 
