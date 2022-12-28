@@ -1,4 +1,5 @@
-from rest_framework.viewsets import ModelViewSet
+# from rest_framework.viewsets import ModelViewSet
+from core.viewsets.order_viwsets import ModelViewSet
 from applications.order.permissions import IsOrderOwner
 from rest_framework.views import APIView
 from rest_framework.response import Response
