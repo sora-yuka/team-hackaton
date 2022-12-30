@@ -6,6 +6,8 @@ from applications.product.serializers import ProductSerializer
 from applications.product.permissions import IsProductOwnerOrReadOnly
 from core.viewsets.product_viewsets import ModelViewSet
 from applications.feedback.mixins import LikedMixin, RatingMixin
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 
 class ProductViewSet(LikedMixin, RatingMixin, ModelViewSet):
@@ -23,4 +25,11 @@ class ProductViewSet(LikedMixin, RatingMixin, ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset
-    
+
+    @action(detail=True, methods=['GET'])
+    def recommend(self, request, pk=None):
+        category = self.get_object().category
+        queryset = Product.objects.filter(category=category)
+        serializers = ProductSerializer(queryset, many=True)
+        return Response(serializers.data)
+

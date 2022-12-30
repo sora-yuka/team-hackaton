@@ -4,7 +4,9 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register("", ProductViewSet)
+# router.register('recommend', ProductRecApiView)
+router.register('', ProductViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),
