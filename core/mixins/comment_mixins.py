@@ -8,23 +8,22 @@ import logging
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
-from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
-logger = logging.getLogger('ORDER')
+logger = logging.getLogger('COMMENT')
 
 class CreateModelMixin:
     """
     Create a model instance.
     """
-    @method_decorator(cache_page(60))
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        logger.info("User ordered product")
-        return Response('Please, confirm your order by email', status=status.HTTP_201_CREATED, headers=headers)
+        logger.info("User posted comment")
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
         serializer.save()
@@ -40,7 +39,6 @@ class ListModelMixin:
     """
     List a queryset.
     """
-    @method_decorator(cache_page(60))
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -50,7 +48,7 @@ class ListModelMixin:
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        logger.info("User browsing order list")
+        logger.info("User browsing comment")
         return Response(serializer.data)
 
 
@@ -58,11 +56,10 @@ class RetrieveModelMixin:
     """
     Retrieve a model instance.
     """
-    @method_decorator(cache_page(60))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        logger.info("User browsing order list in detail")
+        logger.info("User browsing product in detail")
         return Response(serializer.data)
 
 
@@ -70,7 +67,6 @@ class UpdateModelMixin:
     """
     Update a model instance.
     """
-    @method_decorator(cache_page(60))
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -83,7 +79,7 @@ class UpdateModelMixin:
             # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
 
-        logger.info("User updated product")
+        logger.info("User changed comment")
         return Response(serializer.data)
 
     def perform_update(self, serializer):
@@ -92,18 +88,17 @@ class UpdateModelMixin:
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
-    
+
 
 class DestroyModelMixin:
     """
     Destroy a model instance.
     """
-    @method_decorator(cache_page(60))
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        logger.info("User removed order from list")
-        return Response('Post deleted successfully',status=status.HTTP_204_NO_CONTENT)
+        logger.info("User deleted comment")
+        return Response('Comment deleted successfully',status=status.HTTP_204_NO_CONTENT)
 
     def perform_destroy(self, instance):
         instance.delete()
