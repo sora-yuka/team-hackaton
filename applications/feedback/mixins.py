@@ -1,8 +1,12 @@
+import logging
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from applications.feedback import services
 from applications.feedback.serializsers import FanSerializer, RatingSerializer, Rating
+
+
+like_logger = logging.getLogger('LIKE')
 
 class LikedMixin:
     @action(detail=True, methods=['post'])
@@ -11,6 +15,7 @@ class LikedMixin:
         services.add_like(obj, request.user)
         status = 'liked'
         
+        like_logger.info("User liked product")
         return Response({'status': status})
 
     @action(detail=True, methods=['post'])
@@ -19,6 +24,7 @@ class LikedMixin:
         services.remove_like(obj, request.user)
         status = 'unliked'
 
+        like_logger.info("User unliked product")
         return Response({'status': status})
 
     @action(detail=True, methods=['get'])
@@ -27,6 +33,7 @@ class LikedMixin:
         fans = services.get_fans(obj)
         serializer = FanSerializer(fans, many=True)
 
+        like_logger.info("User browsing fans")
         return Response(serializer.data)
     
 class RatingMixin:
@@ -39,4 +46,3 @@ class RatingMixin:
         rating_obj.save()
         
         return Response(request.data, status=status.HTTP_201_CREATED)
-    

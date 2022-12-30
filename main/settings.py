@@ -253,7 +253,12 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'FEEDBACK': {
+        'LIKE': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'COMMENT': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': False,

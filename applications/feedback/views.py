@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.viewsets import ModelViewSet
-from applications.product.models import Like
+from core.viewsets.comment_viewsets import ModelViewSet
 from applications.feedback.models import Comment
 from applications.feedback.serializsers import CommentSerializer
 
