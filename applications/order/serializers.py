@@ -9,25 +9,25 @@ class OrderSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Order
-        fields = '__all__'
+        exclude = ["activation_code", "is_confirm"]
         
         
     def validate_number(self, number):
         if number.startswith('996') and len(number)==12:
             return number
-        raise serializers.ValidationError('Please enter the phone number correctly')
+        raise serializers.ValidationError("Please enter the phone number correctly")
     
              
     def create(self, validated_data):
         amount = validated_data['amount']
         product = validated_data['product']
-        if amount > product.amount:
-            raise serializers.ValidationError(f'We have only {product.amount} pcs')
-        if amount == 0:
-            raise serializers.ValidationError('Enter more than 0 pcs')
         
-        # product.amount -= amount
-        # product.save(update_fields=['amount'])
+        if amount == 0:
+            raise serializers.ValidationError("Enter more than 0 pcs")
+        if product.amount == 0:
+            raise serializers.ValidationError("We don't have any product")
+        if amount > product.amount:
+            raise serializers.ValidationError(f"We have only {product.amount} pcs")
         
         order = Order.objects.create(**validated_data)
         send_confirmation_code.delay(order.owner.email, order.activation_code)

@@ -55,8 +55,6 @@ INSTALLED_APPS = [
     'applications.feedback',
     'applications.order',
     'applications.product',
-    'applications.recomendation',
-    
 ]
 
 MIDDLEWARE = [
@@ -68,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'main.urls'
 
@@ -138,6 +137,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media/'
 
+
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS':{
         'api_key':{
@@ -150,11 +150,13 @@ SWAGGER_SETTINGS = {
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
@@ -193,6 +195,12 @@ SIMPLE_JWT = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CACHES = {
+   'default': {
+      'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+      'LOCATION': os.path.join(BASE_DIR, 'jellyfish_cache'),
+   },
+}
 
 LOGGING = {
     'version': 1,
@@ -243,7 +251,12 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'FEEDBACK': {
+        'LIKE': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'COMMENT': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': False,

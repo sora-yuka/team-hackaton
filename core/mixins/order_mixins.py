@@ -8,6 +8,8 @@ import logging
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 logger = logging.getLogger('ORDER')
 
@@ -15,13 +17,14 @@ class CreateModelMixin:
     """
     Create a model instance.
     """
+    @method_decorator(cache_page(60))
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         logger.info("User ordered product")
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response('Please, confirm your order by email', status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
         serializer.save()
@@ -37,6 +40,7 @@ class ListModelMixin:
     """
     List a queryset.
     """
+    @method_decorator(cache_page(60))
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -54,6 +58,7 @@ class RetrieveModelMixin:
     """
     Retrieve a model instance.
     """
+    @method_decorator(cache_page(60))
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -65,6 +70,7 @@ class UpdateModelMixin:
     """
     Update a model instance.
     """
+    @method_decorator(cache_page(60))
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -92,6 +98,7 @@ class DestroyModelMixin:
     """
     Destroy a model instance.
     """
+    @method_decorator(cache_page(60))
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)

@@ -1,6 +1,5 @@
-# from rest_framework.viewsets import ModelViewSet
-from core.viewsets.order_viwsets import GenericViewSet, ModelViewSet
-from rest_framework.viewsets import mixins
+import logging
+from core.viewsets.order_viwsets import ModelViewSet, GenericViewSet
 from applications.order.permissions import IsOrderOwner
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +10,8 @@ from core.mixins import order_mixins
 
 from applications.order.models import Order
 from applications.order.serializers import OrderSerializer
+
+logger = logging.getLogger('ORDER')
 
 class OrderApiView(ModelViewSet):
     queryset = Order.objects.all()
@@ -25,7 +26,20 @@ class OrderApiView(ModelViewSet):
         
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(owner=self.request.user)
+        queryset = queryset.filter(owner=self.request.user.id)
+        return queryset
+    
+    
+class OrderListApiView(order_mixins.ListModelMixin, GenericViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsOrderOwner]
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['id']
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(is_confirm=True)
         return queryset
     
     
@@ -56,6 +70,8 @@ class OrderConfirmApiView(APIView):
             order.product.amount -= order.amount
             order.product.save(update_fields=['amount'])
             order.save(update_fields=['is_confirm', 'status', 'product'])
+            logger.info("User confirmed order")
+            
             return Response({'message': 'You have confirmed order'}, status=status.HTTP_200_OK)
+        logger.info("User already confirmed order")
         return Response({'message': 'You have already confirmed order'}, status=status.HTTP_400_BAD_REQUEST)
-    

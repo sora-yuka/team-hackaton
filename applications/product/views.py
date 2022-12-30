@@ -1,18 +1,16 @@
-import logging
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from applications.product.models import Product
 from applications.product.serializers import ProductSerializer
 from applications.product.permissions import IsProductOwnerOrReadOnly
-from rest_framework.permissions import IsAuthenticated
-from core.viewsets.product_viewsets import ModelViewSet, GenericViewSet
-from core.mixins import order_mixins
+from core.viewsets.product_viewsets import ModelViewSet
+from applications.feedback.mixins import LikedMixin, RatingMixin
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
-class ProductViewSet(ModelViewSet):
+class ProductViewSet(LikedMixin, RatingMixin, ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsProductOwnerOrReadOnly]
