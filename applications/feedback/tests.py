@@ -94,70 +94,70 @@ class RatingTest(TestCase):
         
         
     
-# class LikeUnlikeTest(TestCase):
-#     def setUp(self) -> None:
-#         User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
-#         Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
-#         self.data = dict(product=Product.objects.get(name='test_product').id)
+class LikeUnlikeTest(TestCase):
+    def setUp(self) -> None:
+        User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
+        Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
+        self.data = dict(product=Product.objects.get(name='test_product').id)
         
-#     @property
-#     def jwt_token(self):
-#         user1 = User.objects.get(email='dcabatar@gmail.com')
-#         refresh = RefreshToken.for_user(user1)
-#         return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
+    @property
+    def jwt_token(self):
+        user1 = User.objects.get(email='dcabatar@gmail.com')
+        refresh = RefreshToken.for_user(user1)
+        return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
     
     
-#     def test_post_like(self):
-#         url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/like/'
-#         response = self.client.post(url, data=self.data, **self.jwt_token)
-#         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        
-    
-#     def test_post_unlike(self):
-#         url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/unlike/'
-#         response = self.client.post(url, data=self.data, **self.jwt_token)
-#         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        
+    def test_post_like(self):
+        url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/like/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         
     
-    
-# class RecommendTest(TestCase):
-#     def setUp(self) -> None:
-#         User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
-#         Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
-#         self.data = dict(product=Product.objects.get(name='test_product').id)
-        
-#     @property
-#     def jwt_token(self):
-#         user1 = User.objects.get(email='dcabatar@gmail.com')
-#         refresh = RefreshToken.for_user(user1)
-#         return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
-    
-    
-#     def test_get_recommend(self):
-#         url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/recommend/'
-#         response = self.client.get(url)
-#         self.assertEqual(status.HTTP_200_OK, response.status_code)
+    def test_post_unlike(self):
+        url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/unlike/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         
         
     
-# class FansTest(TestCase):
-#     def setUp(self) -> None:
-#         User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
-#         Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
-#         self.data = dict(product=Product.objects.get(name='test_product').id)
+    
+class RecommendTest(TestCase):
+    def setUp(self) -> None:
+        User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
+        Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
+        self.data = dict(product=Product.objects.get(name='test_product').id)
         
-#     @property
-#     def jwt_token(self):
-#         user1 = User.objects.get(email='dcabatar@gmail.com')
-#         refresh = RefreshToken.for_user(user1)
-#         return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
+    @property
+    def jwt_token(self):
+        user1 = User.objects.get(email='dcabatar@gmail.com')
+        refresh = RefreshToken.for_user(user1)
+        return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
     
     
-#     def test_get_fans(self):
-#         url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/get_fans/'
-#         response = self.client.get(url)
-#         self.assertEqual(status.HTTP_200_OK, response.status_code)
+    def test_get_recommend(self):
+        url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/recommend/'
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        
+        
+    
+class FansTest(TestCase):
+    def setUp(self) -> None:
+        User.objects.create(email='dcabatar@gmail.com', password='123456', is_active = True)
+        Product.objects.create(name='test_product', price=100, category='Education', amount=100, owner=User.objects.get(email='dcabatar@gmail.com'))
+        self.data = dict(product=Product.objects.get(name='test_product').id)
+        
+    @property
+    def jwt_token(self):
+        user1 = User.objects.get(email='dcabatar@gmail.com')
+        refresh = RefreshToken.for_user(user1)
+        return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
+    
+    
+    def test_get_fans(self):
+        url = f'http://127.0.0.1:8000/api/v1/product/{Product.objects.get(name="test_product").id}/get_fans/'
+        response = self.client.get(url)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
     
         
         

@@ -21,19 +21,19 @@ class OrderTest(TestCase):
         refresh = RefreshToken.for_user(user1)
         return {'HTTP_AUTHORIZATION':f'Bearer {refresh.access_token}'}
         
-    # def test_get_order(self):
-    #     url = 'http://127.0.0.1:8000/api/v1/order/'
-    #     response = self.client.get(url)
+    def test_get_order(self):
+        url = 'http://127.0.0.1:8000/api/v1/order/'
+        response = self.client.get(url)
         
-    #     self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
         
     
-    # def test_post_order(self):
+    def test_post_order(self):
         
-    #     url = 'http://127.0.0.1:8000/api/v1/order/'
-    #     response = self.client.post(url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/order/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
-    #     self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         
     
     
