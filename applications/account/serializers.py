@@ -1,13 +1,14 @@
-from rest_framework import serializers
+from rest_framework import serializers, response
 from django.contrib.auth import get_user_model
 from applications.account.tasks import send_confirmation_email, send_confirmation_code
-import logging
+from django.contrib.auth.hashers import make_password
 
-logger = logging.getLogger('main')
+
 User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(min_length=6)
     password_confirm = serializers.CharField(
         min_length=6,
         write_only=True,
@@ -33,7 +34,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         send_confirmation_email.delay(user.email, code)
         return user
     
-    
+
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(
@@ -62,7 +63,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     def set_new_password(self):
         user = self.context.get('request').user
         password = self.validated_data.get('new_password')
-        user.set_password(password)
+        user.password = make_password(password)
         user.save()
 
 
@@ -71,7 +72,6 @@ class ForgotPasswordSerializer(serializers.Serializer):
 
     def validate_email(self, email):
         if not User.objects.filter(email=email).exists():
-            logger.warning('Wrong Email')
             raise serializers.ValidationError('User with this email doesnt exist!')
         return email
 

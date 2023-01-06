@@ -7,5 +7,9 @@ c:
 	./manage.py collectstatic
 r:
 	./manage.py runserver
-t:
-	python3 task.py
+ta:
+	./manage.py test applications/account
+tp:
+	./manage.py test applications/product
+tf:
+	./manage.py test applications/favorite

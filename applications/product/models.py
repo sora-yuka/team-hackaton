@@ -27,6 +27,9 @@ class Like(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveSmallIntegerField()
     content = GenericForeignKey('content_type', 'object_id')
+    
+    def __str__(self):
+        return self.user
 
 
 class Product(models.Model):
