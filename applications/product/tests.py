@@ -5,7 +5,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 User = get_user_model()
-url = 'http://127.0.0.1:8000/api/v1/product/'
 
 class ProductTestCase(TestCase):
     def setUp(self) -> None:
@@ -20,18 +19,21 @@ class ProductTestCase(TestCase):
     
     
     def test_product_post(self):  
-        response = self.client.post(self.url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         
         
     def test_product_get(self):
-        response = self.client.get(self.url)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.get(url)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         
     
     def test_product_get_detail(self):
-        response = self.client.post(self.url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
         url = f'http://127.0.0.1:8000/api/v1/product/{response.data["id"]}/'
         response = self.client.get(url)
@@ -40,7 +42,8 @@ class ProductTestCase(TestCase):
         
      
     def test_product_put(self):    
-        response = self.client.post(self.url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
         data1 = {'name':'put', 'price':1500, 'category':'Education', 'amount': 50}
         url = f'http://127.0.0.1:8000/api/v1/product/{response.data["id"]}/'
@@ -50,7 +53,8 @@ class ProductTestCase(TestCase):
         
         
     def test_product_patch(self):      
-        response = self.client.post(self.url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
         data1 = {'name':'patch', 'category':'Education', 'amount': 50}
         url = f'http://127.0.0.1:8000/api/v1/product/{response.data["id"]}/'
@@ -60,7 +64,8 @@ class ProductTestCase(TestCase):
         
         
     def test_product_delete(self):
-        response = self.client.post(self.url, data=self.data, **self.jwt_token)
+        url = 'http://127.0.0.1:8000/api/v1/product/'
+        response = self.client.post(url, data=self.data, **self.jwt_token)
         
         url = f'http://127.0.0.1:8000/api/v1/product/{response.data["id"]}/'
         response = self.client.delete(url, **self.jwt_token, content_type='application/json')
