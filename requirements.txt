@@ -9,3 +9,4 @@ django-filter
 drf-yasg
 celery[redis]
 python-json-logger
+Flask
