@@ -45,4 +45,32 @@ class RatingMixin:
         rating_obj.rating = request.data['rating']
         rating_obj.save()
         
-        return Response(request.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    
+    @action(detail=True, methods=['put', 'patch'])
+    def rating_update(self, request, pk, *args, **kwargs):
+        serializer = RatingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        rating_obj, _ = Rating.objects.get_or_create(product_id=pk, owner=request.user)
+        rating_obj.rating = request.data['rating']
+        rating_obj.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['delete'])
+    def rating_delete(self, request, pk, *args, **kwargs):
+        rating_obj, _ = Rating.objects.get_or_create(product_id=pk, owner=request.user)
+        rating_obj.delete()
+        
+        return Response('Deleted', status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+    
+    
+    
+        
+    
+        
+        
