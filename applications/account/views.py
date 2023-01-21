@@ -23,8 +23,7 @@ class RegisterAPIView(APIView):
         logger.info('User signed up')
         return Response('You have successfully registred.\n '
                         'We sent an activation email',
-                        status=201
-                        )
+                        status=201)
 
 
 class ChangePasswordAPIView(APIView):
@@ -68,4 +67,4 @@ class ForgotPasswordCompleteAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.set_new_password()
         logger.info('User regained access to the profile')
-        return Response('Password updadted successfully!')
+        return Response('Password updated successfully!')
